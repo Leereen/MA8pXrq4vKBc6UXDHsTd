@@ -1,0 +1,10 @@
+dist: trusty
+
+sudo: false
+
+language: cpp
+
+compiler: clang
+
+script:
+  - make clean do_asan_test
