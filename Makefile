@@ -1,14 +1,20 @@
 .PHONY: all asan build test do_test clean
 .DEFAULT_GOAL := all
 
+SHELL=/bin/bash # for arithmetic syntax AND proper ulimit parameters
+
 BUILD_DIR=./build/
 OPT_COMPILER=-DCMAKE_CXX_COMPILER=clang++
 OPT_ASAN=-DASAN=ON
 OPT_GTEST=-DGTEST=ON
 OPT_DEBUG=-DDEBUG_MODE=ON
 
+
 .mkdir:
 	@mkdir -p ${BUILD_DIR}
+
+.run_test:
+	ulimit -Sm $$((1024 ** 2)) && $(SH) ./build/tests/tests
 
 all: .mkdir
 	@(cd ${BUILD_DIR} && cmake ${OPT_COMPILER} .. && $(MAKE) VERBOSE=1)
@@ -22,14 +28,12 @@ debug: .mkdir
 test: .mkdir
 	@(cd ${BUILD_DIR} && cmake ${OPT_COMPILER} ${OPT_GTEST} .. && $(MAKE) VERBOSE=1)
 
-do_test: test
-	$(SH) ./build/tests/tests
+do_test: test .run_test
 
 asan_test: .mkdir
 	@(cd ${BUILD_DIR} && cmake ${OPT_COMPILER} ${OPT_ASAN} ${OPT_GTEST} .. && $(MAKE) VERBOSE=1)
 
-do_asan_test: asan_test
-	$(SH) ./build/tests/tests
+do_asan_test: asan_test .run_test
 
 clean:
 	@$(RM) -rf ${BUILD_DIR}
