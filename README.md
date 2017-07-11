@@ -1,0 +1,1 @@
+[![Travis Build Status](https://travis-ci.org/Leereen/MA8pXrq4vKBc6UXDHsTd.svg?branch=master)](https://travis-ci.org/Leereen/MA8pXrq4vKBc6UXDHsTd)
