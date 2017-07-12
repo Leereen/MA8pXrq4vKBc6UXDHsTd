@@ -115,7 +115,9 @@ const std::string Path::print() const
   std::string message("[ ");
   for (const Node& node : _path)
     {
-      message += "(" + std::to_string(node.first) + ", " + std::to_string(node.second) + ") ";
+      message += "(" + std::to_string(node.first) + ", " + \
+        std::to_string(node.second) + ")[" + \
+        std::to_string(_grid.get_position(node)) + "] ";
     }
   message += "]";
   return message;

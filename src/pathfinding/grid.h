@@ -21,6 +21,11 @@ class Grid
   const bool is_traversable(const Node&) const;
   const uint32_t get_position(const Node&) const;
 
+#ifdef DEBUG_MACRO
+#include <string>
+  const std::string print() const;
+#endif
+
 };
 
 

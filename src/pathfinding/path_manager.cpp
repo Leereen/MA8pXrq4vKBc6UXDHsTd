@@ -4,10 +4,11 @@
 
 
 PathManager::PathManager(const Grid& grid, const uint32_t max,
-                         const Node& start, const Node& end)
+                         const Node& start, const Node& end,
+                         const bool early_break)
   : _grid(grid), _max_size(max), _destination(end),
     _paths({std::shared_ptr<Path>(new Path(grid, start))}),
-    _shortest_path()
+    _shortest_path(), _early_break(early_break)
 {}
 
 
@@ -54,7 +55,7 @@ const bool PathManager::_evaluate_new_paths(PathSet& new_paths, Path& entry_path
  }
 
 
-void PathManager::recc(const uint32_t current_size)
+const bool PathManager::recc(const uint32_t current_size)
 {
   /*
     Each call of recc builds all the possible paths of N nodes (N being the
@@ -64,19 +65,25 @@ void PathManager::recc(const uint32_t current_size)
     will contain every possible new paths, with no need to copy old paths from
     _paths. If new_paths is empty, it means there is no paths to _destination.
   */
+  if (current_size == _max_size and _early_break)
+    {
+      // _max_size (nOutBufferSize) reached. Aborting if _early_break activated
+      return false;
+    }
   std::list<std::shared_ptr<Path>> new_paths;
   for (std::shared_ptr<Path>& entry_path : _paths)
     {
       if (_evaluate_new_paths(new_paths, *entry_path))
         {
-          return;
+          return true;
         }
     }
   _paths = new_paths;
   if (new_paths.size())
     {
-      recc(current_size+1);
+      return recc(current_size+1);
     }
+  return false;
 }
 
 const bool PathManager::has_solution() const
@@ -105,10 +112,11 @@ const bool PathManager::register_solution(int* pOutBuffer) const
     {
       return false;
     }
-  if (_shortest_path->size() > _max_size)
-    {
-      return false;
-    }
+  // // verification no longer needed with _ealry_break mechanism
+  // if (_shortest_path->size() > _max_size)
+  //   {
+  //     return false;
+  //   }
   const std::vector<int> indices = _shortest_path->get_indices();
   for (int i = 0; i < _max_size; i++)
     {

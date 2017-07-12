@@ -2,6 +2,7 @@
 
 
 Grid::Grid(const uint32_t x, const uint32_t y, const unsigned char* grid)
+  // '-1' as indices starts at 0.
   : _max_x(x-1), _max_y(y-1), _grid(grid)
 {}
 
@@ -31,3 +32,23 @@ const uint32_t Grid::get_position(const Node& node) const
 {
   return node.first + (node.second * (_max_x+1));
 }
+
+
+#ifdef DEBUG_MACRO
+const std::string Grid::print() const
+{
+  std::string array = "[ ";
+  size_t i;
+  const uint32_t width = _max_x + 1;
+  const uint32_t total = width * (_max_y + 1);
+  for (i = 0; i < total; i++)
+    {
+      if (i and not (i % (width))) {
+        array += "\n  ";
+      }
+      array += std::to_string(_grid[i]) + " ";
+    }
+  array += "]";
+  return array;
+}
+#endif

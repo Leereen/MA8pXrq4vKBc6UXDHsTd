@@ -20,13 +20,14 @@ class PathManager
   const Node& _destination;
   PathSet _paths;
   std::shared_ptr<Path> _shortest_path;
+  const bool _early_break;
 
   const bool _evaluate_new_paths(PathSet&, Path&);
 
  public:
 
-  PathManager(const Grid&, const uint32_t, const Node&, const Node&);
-  void recc(const uint32_t = 0);
+  PathManager(const Grid&, const uint32_t, const Node&, const Node&, const bool = true);
+  const bool recc(const uint32_t = 0);
   const bool register_solution(int *) const;
   const bool has_solution() const;
   const uint32_t solution_length() const;
