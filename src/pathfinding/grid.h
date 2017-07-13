@@ -1,6 +1,8 @@
 #ifndef GRID_H
 #define GRID_H
 
+#include <forward_list>
+
 #include "types.h"
 
 
@@ -11,15 +13,19 @@ class Grid
   const uint32_t _max_x;
   const uint32_t _max_y;
   const unsigned char* _grid;
+  const bool _is_out_of_bounds(const Node&) const;
+  const bool _is_traversable(const Node&) const;
 
  public:
 
   Grid(const uint32_t, const uint32_t, const unsigned char*);
   Grid(const Grid&);
 
-  const bool is_out_of_bounds(const Node&) const;
-  const bool is_traversable(const Node&) const;
   const uint32_t get_position(const Node&) const;
+  const Node get_node(const uint32_t) const;
+
+  const std::forward_list<uint32_t> get_valid_next_positions(const uint32_t) const;
+
 
 #ifdef DEBUG_MACRO
 #include <string>

@@ -15,9 +15,9 @@ int FindPath(const int nStartX, const int nStartY,
              int* pOutBuffer, const int nOutBufferSize,
              const bool early_break)
 {
-  const Node start(nStartX, nStartY);
-  const Node end(nTargetX, nTargetY);
   const Grid grid(nMapWidth, nMapHeight, pMap);
+  const uint32_t start = grid.get_position(Node(nStartX, nStartY));
+  const uint32_t end = grid.get_position(Node(nTargetX, nTargetY));
   DEBUG_PRINT(grid.print());
   PathManager manager (grid, nOutBufferSize, start, end, early_break);
   if (not manager.recc() and early_break)

@@ -37,7 +37,7 @@ endfunction(add_in_list)
 set(CMAKE_CXX_STANDARD 11)
 if (ASAN)
   MESSAGE(STATUS "${Yellow}[OPTION] ASAN compilation flags activated${Reset}")
-  set(CMAKE_CXX_FLAGS "-fsanitize=address -fno-omit-frame-pointer -fno-common")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer -fno-common")
 endif()
 
 option(ASAN OFF)

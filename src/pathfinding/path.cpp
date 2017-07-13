@@ -4,8 +4,7 @@
 #include "path.h"
 
 
-Path::Path(const Grid& grid, const Node& starting_node)
-  : _path({starting_node}), _grid(grid)
+Path::Path(const Grid& grid): _path(), _grid(grid)
 {}
 
 
@@ -13,14 +12,19 @@ Path::Path(const Path& other) : _path(other._path), _grid(other._grid)
 {}
 
 
-const Node& Path::front() const
+Path::Path(const Grid& grid, const uint32_t starting_position)
+  : _path({starting_position}), _grid(grid)
+{}
+
+
+const uint32_t Path::front() const
 {
   // NB: _path can't be empty by construction
   return _path.front();
 }
 
 
-const Node& Path::back() const
+const uint32_t Path::back() const
 {
   // NB: _path can't be empty by construction
   return _path.back();
@@ -33,13 +37,19 @@ const uint32_t Path::size() const
 }
 
 
-const bool Path::contains(const Node& new_node) const
+const bool Path::operator==(const Path& other) const
 {
-  if (std::find(_path.begin(), _path.end(), new_node) != _path.end())
+  return (back() == other.back() and front() == other.front());
+}
+
+
+const bool Path::contains(const uint32_t new_position) const
+{
+  if (std::find(_path.begin(), _path.end(), new_position) != _path.end())
     {
       // this is not very efficient as a new element requires the whole _path to
       // be scrolled.
-      // keeping a std::set of nodes would ease this, but would consume more
+      // keeping a std::set of positions would ease this, but would consume more
       // space.
       // TODO: maybe as an option?
       return true;
@@ -48,53 +58,36 @@ const bool Path::contains(const Node& new_node) const
 }
 
 
-const bool Path::add_node(const Node& new_node)
+const bool Path::add_position(const uint32_t new_position)
 {
-  // Check if new_node is not in already in path, then insert it at back and
+  // Check if new_position is not in already in path, then insert it at back and
   // return true, else return false
-  if (contains(new_node))
+  if (contains(new_position))
     {
       return false;
     }
-  _path.push_back(new_node);
+  _path.push_back(new_position);
   return true;
 }
 
 
-const std::forward_list<Node> Path::new_nodes() const
+const std::forward_list<uint32_t> Path::new_positions() const
 {
-  // Return every possible new nodes:
+  // Return every possible new positions:
   //  - not out of bounds
   //  - not already in _path
   //  - not blocked on the grid
-  const Node& current_node = _path.back();
-  std::forward_list<Node> new_nodes;
-  for (const Node potential_node : {
-        Node(current_node.first + 1, current_node.second),
-        Node(current_node.first - 1, current_node.second),
-        Node(current_node.first, current_node.second + 1),
-        Node(current_node.first, current_node.second - 1)
-      })
+  const uint32_t current_position = _path.back();
+  std::forward_list<uint32_t> new_positions;
+  for (const uint32_t potential_position : _grid.get_valid_next_positions(current_position))
     {
-      if (_grid.is_out_of_bounds(potential_node) or
-          contains(potential_node) or
-          not _grid.is_traversable(potential_node))
+      if (contains(potential_position))
         {
-          // if node is out of bounds, or already exists in path, or is
-          // unpassable, then don't bother testing path from it.
           continue;
         }
-      new_nodes.push_front(potential_node);
+      new_positions.push_front(potential_position);
     }
-  return new_nodes;
-}
-
-
-const bool Path::is_same(const Path& other_path) const
-{
-  // Returns if same_path is the same as _path, i.e if both their starting node
-  // and last node are the same.
-  return ((front() == other_path.front()) and (back() == other_path.back()));
+  return new_positions;
 }
 
 
@@ -104,36 +97,28 @@ const bool Path::is_shorter(const Path& other_path) const
 }
 
 
-const bool Path::is_valid(const Node& end_node) const
+const bool Path::is_valid(const uint32_t end_position) const
 {
-  return (back() == end_node);
+  return (back() == end_position);
 }
 
 # ifdef DEBUG_MACRO
 const std::string Path::print() const
 {
   std::string message("[ ");
-  for (const Node& node : _path)
+  for (const uint32_t position : _path)
     {
-      message += "(" + std::to_string(node.first) + ", " + \
-        std::to_string(node.second) + ")[" + \
-        std::to_string(_grid.get_position(node)) + "] ";
+      const Node node = _grid.get_node(position);
+      message += "(" + std::to_string(node.first) + ", " +
+        std::to_string(node.second) + ")[" +
+        std::to_string(position) + "] ";
     }
   message += "]";
   return message;
 }
 #endif
 
-const std::vector<int> Path::get_indices() const
+const std::deque<uint32_t> Path::get_indices() const
 {
-  // _path keeps the starting node to trigger reccursivity
-  // no longer needed in final solution
-  std::vector<int> indices(size()-1);
-  int i = 0;
-  for (auto it = ++_path.begin(); it != _path.end(); it++)
-    {
-      indices[i] = _grid.get_position(*it);
-      i++;
-    }
-  return indices;
+  return _path;
 }
