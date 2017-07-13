@@ -37,7 +37,9 @@ TEST(FindPath, easy2)
 
 TEST(FindPath, fail1)
 {
-  unsigned char pMap[] = {0, 0, 1, 0, 1, 1, 1, 0, 1};
+  unsigned char pMap[] = {0, 0, 1,
+                          0, 1, 1,
+                          1, 0, 1};
   int buffer[7];
   const int result = FindPath(2, 0, 0, 2, pMap, 3, 3, buffer, 7);
   ASSERT_EQ(result, -1);
@@ -78,12 +80,33 @@ TEST(FindPath, a1_early_break_fail)
 }
 
 
-// TEST(FindPath, a2_success)
-// {
-//   int buffer[test::a2_path_length];
-//   const int result = FindPath(test::a2_sx, test::a2_sy, test::a2_dx, test::a2_dy,
-//                               test::a2, test::a2_w, test::a2_h, buffer,
-//                               test::a2_path_length, false);
-//   ASSERT_EQ(result, test::a2_path_length);
-//   ASSERT_TRUE(0 == std::memcmp(buffer, test::a2_real, test::a2_path_length));
-// }
+TEST(FindPath, a2_success)
+{
+  int buffer[test::a2_path_length];
+  const int result = FindPath(test::a2_sx, test::a2_sy, test::a2_dx, test::a2_dy,
+                              test::a2, test::a2_w, test::a2_h, buffer,
+                              test::a2_path_length, false);
+  ASSERT_EQ(result, test::a2_path_length);
+  ASSERT_TRUE(0 == std::memcmp(buffer, test::a2_real, test::a2_path_length));
+}
+
+
+TEST(FindPath, a3_success)
+{
+  int buffer[test::a3_path_length];
+  const int result = FindPath(test::a3_sx, test::a3_sy, test::a3_dx, test::a3_dy,
+                              test::a3, test::a3_w, test::a3_h, buffer,
+                              test::a3_path_length, false);
+  ASSERT_EQ(result, test::a3_path_length);
+  ASSERT_TRUE(0 == std::memcmp(buffer, test::a3_real, test::a3_path_length));
+}
+
+
+TEST(FindPath, a4_no_early_break_fail)
+{
+  int buffer[test::a4_path_length];
+  const int result = FindPath(test::a4_sx, test::a4_sy, test::a4_dx, test::a4_dy,
+                              test::a4, test::a4_w, test::a4_h, buffer,
+                              test::a4_path_length, false);
+  ASSERT_EQ(result, -1);
+}

@@ -16,6 +16,8 @@ const bool PathManager::_evaluate_new_paths(PathSet& new_paths, const Path& entr
 {
   /*
     Given an entry path, we build and check every possible path from it.
+
+    Return true if the final path is detected, else false.
    */
   for (const uint32_t test_position : entry_path.new_positions())
     {
@@ -25,7 +27,7 @@ const bool PathManager::_evaluate_new_paths(PathSet& new_paths, const Path& entr
       if (test_position == _destination)
         {
           // solution!
-          DEBUG_PRINT("Solution found! (just before ^)");
+          DEBUG_PRINT("Solution found! >> " + new_path->print());
           _shortest_path = new_path;
           return true;
         }
@@ -56,7 +58,7 @@ const bool PathManager::_evaluate_new_paths(PathSet& new_paths, const Path& entr
         }
     }
   return false;
- }
+}
 
 
 const bool PathManager::recc(const uint32_t current_size)
@@ -95,7 +97,7 @@ const bool PathManager::recc(const uint32_t current_size)
 
 const bool PathManager::has_solution() const
 {
-  if (_shortest_path->size())
+  if (_shortest_path)
     {
       return true;
     }
@@ -115,7 +117,7 @@ const uint32_t PathManager::solution_length() const
 
 const bool PathManager::register_solution(int* pOutBuffer) const
 {
-  if (not _shortest_path->size())
+  if (not _shortest_path)
     {
       return false;
     }

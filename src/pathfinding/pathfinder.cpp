@@ -24,6 +24,7 @@ int FindPath(const int nStartX, const int nStartY,
     {
       // - no final result found (manager.recc returned false)
       // - early_break required (no further research beyond limit reached)
+      DEBUG_PRINT("No solution was found... Early break.");
       return -1;
     }
   // else manager.recc may be false but the early_break was not activated,

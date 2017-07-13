@@ -31,12 +31,17 @@ test: .mkdir
 asan_test: .mkdir
 	@(cd ${BUILD_DIR} && cmake ${OPT_COMPILER} ${OPT_ASAN} ${OPT_GTEST} .. && $(MAKE) VERBOSE=1)
 
+debug_test: .mkdir
+	@(cd ${BUILD_DIR} && cmake ${OPT_COMPILER} ${OPT_DEBUG} ${OPT_GTEST} .. && $(MAKE) VERBOSE=1)
+
 full_test: .mkdir
 	@(cd ${BUILD_DIR} && cmake ${OPT_COMPILER} ${OPT_ASAN} ${OPT_GTEST} ${OPT_DEBUG} .. && $(MAKE) VERBOSE=1)
 
 do_test: test .run_test
 
 do_asan_test: asan_test .run_test
+
+do_debug_test: debug_test .run_test
 
 do_full_test: full_test .run_test
 
