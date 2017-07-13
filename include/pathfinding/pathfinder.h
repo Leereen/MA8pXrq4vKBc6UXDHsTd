@@ -13,6 +13,10 @@
     - both Start and Target are empty locations,
 
     - nOutBufferSize >= 0
+
+    - as most containers used do not sort data, the program can provide
+      different solution for array with multiple valid paths.
+      (the provided solutions seem however stable on a given computer)
 */
 int FindPath(const int nStartX, const int nStartY,
              const int nTargetX, const int nTargetY,
