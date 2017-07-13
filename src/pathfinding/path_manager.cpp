@@ -24,16 +24,29 @@ const bool PathManager::_evaluate_new_paths(PathSet& new_paths, Path& entry_path
       DEBUG_PRINT(new_path->print());
       if (test_node == _destination)
         {
-          // first node is starting node used to trigger the reccursion.
-          // not needed in final solution
+          // solution!
           _shortest_path = new_path;
           return true;
         }
       bool is_valid = true;
       /*
-        New paths are evaluated against old paths in order to prevent loops.
+        New path is evaluated against old paths in order to prevent loops.
       */
       for (const std::shared_ptr<Path>& old_path: _paths)
+        {
+          if (new_path->is_same(*old_path) and not new_path->is_shorter(*old_path))
+            {
+              // the same path already exists in paths, and is equal or longer
+              is_valid = false;
+              break;
+            }
+        }
+      /*
+        New path is evaluated against already generated news paths in order to
+        prevent repetition.
+        TODO: wouldn't a set automaticaly fix this test?
+      */
+      for (const std::shared_ptr<Path>& old_path: new_paths)
         {
           if (new_path->is_same(*old_path) and not new_path->is_shorter(*old_path))
             {
@@ -70,7 +83,7 @@ const bool PathManager::recc(const uint32_t current_size)
       // _max_size (nOutBufferSize) reached. Aborting if _early_break activated
       return false;
     }
-  std::list<std::shared_ptr<Path>> new_paths;
+  PathSet new_paths;
   for (std::shared_ptr<Path>& entry_path : _paths)
     {
       if (_evaluate_new_paths(new_paths, *entry_path))
@@ -81,6 +94,9 @@ const bool PathManager::recc(const uint32_t current_size)
   _paths = new_paths;
   if (new_paths.size())
     {
+      DEBUG_PRINT("Iteration: " + std::to_string(current_size) +
+                  " (nb paths: " + std::to_string(new_paths.size())
+                  + ")");
       return recc(current_size+1);
     }
   return false;
