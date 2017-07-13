@@ -46,22 +46,44 @@ TEST(FindPath, fail1)
 
 TEST(FindPath, a1_success)
 {
+  int buffer[test::a1_path_length];
+  const int result = FindPath(test::a1_sx, test::a1_sy, test::a1_dx, test::a1_dy,
+                              test::a1, test::a1_w, test::a1_h, buffer,
+                              test::a1_path_length);
+  ASSERT_EQ(result, test::a1_path_length);
+  ASSERT_TRUE(0 == std::memcmp(buffer, test::a1_real, test::a1_path_length));
+}
+
+
+TEST(FindPath, a1_no_early_break_success)
+{
   const int size = 20;
   int buffer[20];
   const int result = FindPath(test::a1_sx, test::a1_sy, test::a1_dx, test::a1_dy,
                               test::a1, test::a1_w, test::a1_h, buffer, size,
                               false); // _early_break deactivated
-  ASSERT_EQ(result, sizeof(test::a1_real)/sizeof(int));
-  ASSERT_TRUE(0 == std::memcmp(buffer, test::a1_expected, size));
+  ASSERT_EQ(result, test::a1_path_length);
+  ASSERT_TRUE(0 == std::memcmp(buffer, test::a1_real, size));
 }
 
 
-TEST(FindPath, a1_fail)
+TEST(FindPath, a1_early_break_fail)
 {
   const int size = 20;
   int buffer[20];
   const int result = FindPath(test::a1_sx, test::a1_sy, test::a1_dx, test::a1_dy,
                               test::a1, test::a1_w, test::a1_h, buffer, size);
   ASSERT_EQ(result, -1);
-  ASSERT_FALSE(0 == std::memcmp(buffer, test::a1_expected, size));
+  ASSERT_FALSE(0 == std::memcmp(buffer, test::a1_real, size));
 }
+
+
+// TEST(FindPath, a2_success)
+// {
+//   int buffer[test::a2_path_length];
+//   const int result = FindPath(test::a2_sx, test::a2_sy, test::a2_dx, test::a2_dy,
+//                               test::a2, test::a2_w, test::a2_h, buffer,
+//                               test::a2_path_length, false);
+//   ASSERT_EQ(result, test::a2_path_length);
+//   ASSERT_TRUE(0 == std::memcmp(buffer, test::a2_real, test::a2_path_length));
+// }
