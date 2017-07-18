@@ -5,7 +5,7 @@
 
 PathManager::PathManager(const uint32_t max, const uint32_t start,
                          const uint32_t end, const bool early_break)
-  : _max_size(max), _destination(end), _visited({start}), _shortest_path(),
+  : _max_size(max), _destination(end), _visited({start}), _shortest_path(nullptr),
     _early_break(early_break)
 {}
 
@@ -59,7 +59,7 @@ const bool PathManager::recc(const PathSet& current_paths, const uint32_t curren
     Each call of recc builds all the possible paths of N positions (N being the
     number of recc calls), generated and evaluated from the paths generated
     at N-1 rec call.
-    As EVERY old path is used to generate new paths, the generated new_paths
+    As EVERY current path is used to generate new paths, the generated new_paths
     will contain every possible new paths. If new_paths is empty, it means there
     is no paths to _destination.
   */
@@ -88,11 +88,7 @@ const bool PathManager::recc(const PathSet& current_paths, const uint32_t curren
 
 const bool PathManager::has_solution() const
 {
-  if (_shortest_path)
-    {
-      return true;
-    }
-  return false;
+  return not (_shortest_path == nullptr);
 }
 
 

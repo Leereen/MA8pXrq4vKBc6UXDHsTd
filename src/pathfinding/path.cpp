@@ -43,29 +43,8 @@ const bool Path::operator==(const Path& other) const
 }
 
 
-const bool Path::contains(const uint32_t new_position) const
-{
-  if (std::find(_path.begin(), _path.end(), new_position) != _path.end())
-    {
-      // this is not very efficient as a new element requires the whole _path to
-      // be scrolled.
-      // keeping a std::set of positions would ease this, but would consume more
-      // space.
-      // TODO: maybe as an option?
-      return true;
-    }
-  return false;
-}
-
-
 const bool Path::add_position(const uint32_t new_position)
 {
-  // Check if new_position is not in already in path, then insert it at back and
-  // return true, else return false
-  if (contains(new_position))
-    {
-      return false;
-    }
   _path.push_back(new_position);
   return true;
 }
@@ -73,21 +52,7 @@ const bool Path::add_position(const uint32_t new_position)
 
 const std::forward_list<uint32_t> Path::new_positions() const
 {
-  // Return every possible new positions:
-  //  - not out of bounds
-  //  - not already in _path
-  //  - not blocked on the grid
-  const uint32_t current_position = _path.back();
-  std::forward_list<uint32_t> new_positions;
-  for (const uint32_t potential_position : _grid.get_valid_next_positions(current_position))
-    {
-      if (contains(potential_position))
-        {
-          continue;
-        }
-      new_positions.push_front(potential_position);
-    }
-  return new_positions;
+  return _grid.get_valid_next_positions(_path.back());
 }
 
 

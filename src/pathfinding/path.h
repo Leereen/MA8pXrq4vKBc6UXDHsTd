@@ -6,6 +6,7 @@
 #include "types.h"
 #include "grid.h"
 
+
 class Path;
 template <> class std::hash<Path>;
 
@@ -29,7 +30,6 @@ class Path
   const bool operator==(const Path&) const;
   const bool is_shorter(const Path&) const;
   const bool is_valid(const uint32_t) const;
-  const bool contains(const uint32_t) const;
   const std::forward_list<uint32_t> new_positions() const;
 
   const bool add_position(const uint32_t);
