@@ -41,11 +41,14 @@ const bool PathManager::_evaluate_new_paths(PathSet& new_paths, const Path& entr
           continue;
         }
       /*
-        New path is evaluated against old paths in order to prevent loops.
+        New position is evaluated against old paths in order to prevent loops.
       */
       for (const Path& old_path: _paths)
         {
-          if (old_path == (*new_path) and not new_path->is_shorter(old_path))
+          // if (old_path == (*new_path) and not new_path->is_shorter(old_path))
+          // this test is enough. The old test was checking ONLY PATHS ONE STEP
+          // BEFORE
+          if (old_path.contains(test_position))
             {
               // the same path already exists in paths, and is equal or longer
               is_valid = false;
