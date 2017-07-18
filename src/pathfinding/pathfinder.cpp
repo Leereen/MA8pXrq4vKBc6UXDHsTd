@@ -19,8 +19,8 @@ int FindPath(const int nStartX, const int nStartY,
   const uint32_t start = grid.get_position(Node(nStartX, nStartY));
   const uint32_t end = grid.get_position(Node(nTargetX, nTargetY));
   DEBUG_PRINT(grid.print());
-  PathManager manager (grid, nOutBufferSize, start, end, early_break);
-  if (not manager.recc() and early_break)
+  PathManager manager (nOutBufferSize, start, end, early_break);
+  if (not manager.recc({Path(grid, start)}) and early_break)
     {
       // - no final result found (manager.recc returned false)
       // - early_break required (no further research beyond limit reached)
