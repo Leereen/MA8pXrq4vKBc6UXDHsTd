@@ -61,10 +61,5 @@ if (GTEST)
   add_subdirectory(tests)
 endif()
 
-# basic exe for future use
-add_executable(output.bin src/main.cpp)
-get_property(pathfinding_libraries GLOBAL PROPERTY PATHFINDING_LIBRARIES)
-target_link_libraries(output.bin ${pathfinding_libraries})
-
 # end
 MESSAGE(STATUS "${Green}Preparing compilation for pathfinding version ${Bold}${pathfinding_VERSION}${Reset}")

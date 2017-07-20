@@ -15,4 +15,5 @@ set(TEST_FILES
 add_executable(tests main.cpp ${TEST_FILES})
 get_property(pathfinding_libraries GLOBAL PROPERTY PATHFINDING_LIBRARIES)
 add_dependencies(tests ${pathfinding_libraries})
+set(CMAKE_STATIC_LINKER_FLAGS "-fprofile-instr-generate ${CMAKE_STATIC_LINKER_FLAGS}")
 target_link_libraries(tests ${GTEST_LIB} ${pathfinding_libraries})

@@ -9,12 +9,14 @@ OPT_ASAN=-DASAN=ON
 OPT_GTEST=-DGTEST=ON
 OPT_DEBUG=-DDEBUG_MODE=ON
 
+TEST_BIN=${BUILD_DIR}tests/tests
+
 
 .mkdir:
 	@mkdir -p ${BUILD_DIR}
 
 .run_test:
-	ulimit -Sm $$((1024 ** 2)) && $(SH) ./build/tests/tests
+	ulimit -Sm $$((1024 ** 2)) && $(SH) ${TEST_BIN}
 
 all: .mkdir
 	@(cd ${BUILD_DIR} && cmake ${OPT_COMPILER} .. && $(MAKE) VERBOSE=1)
@@ -47,6 +49,7 @@ do_full_test: full_test .run_test
 
 clean:
 	@$(RM) -rf ${BUILD_DIR}
+	@$(RM) ${DEFAULT_COVERAGE_DATA} ${DEFAULT_COVERAGE_RAW}
 
 init:
 	git submodule init
