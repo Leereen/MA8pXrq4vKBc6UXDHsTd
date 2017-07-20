@@ -109,8 +109,18 @@ TEST(FindPath, a3_success)
 TEST(FindPath, a4_no_early_break_fail)
 {
   int buffer[test::a4_path_length];
-  const int result = FindPath(test::a4_sx, test::a4_sy, test::a4_dx, test::a4_dy,
+  const int result = FindPath(test::a4_sx-1, test::a4_sy+1, test::a4_dx, test::a4_dy,
                               test::a4, test::a4_w, test::a4_h, buffer,
                               test::a4_path_length, false);
   ASSERT_EQ(result, -1);
+}
+
+
+TEST(FindPath, a4_no_early_break_success)
+{
+  int buffer[test::a4_path_length];
+  const int result = FindPath(test::a4_sx, test::a4_sy, test::a4_dx, test::a4_dy,
+                              test::a4, test::a4_w, test::a4_h, buffer,
+                              test::a4_path_length, false);
+  ASSERT_EQ(result, test::a4_path_length);
 }

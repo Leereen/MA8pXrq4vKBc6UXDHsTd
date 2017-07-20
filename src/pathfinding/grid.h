@@ -23,6 +23,8 @@ class Grid
 
   const uint32_t get_position(const Node&) const;
   const Node get_node(const uint32_t) const;
+  const bool get_value(const uint32_t) const;
+  const bool get_value(const Node&) const;
 
   const std::forward_list<uint32_t> get_valid_next_positions(const uint32_t) const;
 

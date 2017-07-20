@@ -62,6 +62,18 @@ const std::forward_list<uint32_t> Grid::get_valid_next_positions(const uint32_t 
 }
 
 
+const bool Grid::get_value(const Node& node) const
+{
+  return get_value(get_position(node));
+}
+
+
+const bool Grid::get_value(const uint32_t position) const
+{
+  return (bool)_grid[position];
+}
+
+
 #ifdef DEBUG_MACRO
 const std::string Grid::print() const
 {
