@@ -1,5 +1,5 @@
-#ifndef DATASET_H
-#define DATASET_H
+#ifndef TESTS_DATASET_H
+#define TESTS_DATASET_H
 
 namespace test
 {
@@ -218,4 +218,4 @@ namespace test
 
 };
 
-#endif // DATASET_H
+#endif // TESTS_DATASET_H

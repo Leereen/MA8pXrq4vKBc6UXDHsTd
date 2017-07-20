@@ -19,7 +19,6 @@ class Path
   const Grid& _grid;
 
  public:
-  Path(const Grid&);
   Path(const Path&);
   Path(const Grid&, const uint32_t);
 

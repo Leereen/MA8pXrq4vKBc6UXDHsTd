@@ -4,10 +4,6 @@
 #include "path.h"
 
 
-Path::Path(const Grid& grid): _path(), _grid(grid)
-{}
-
-
 Path::Path(const Path& other) : _path(other._path), _grid(other._grid)
 {}
 
@@ -67,6 +63,7 @@ const bool Path::is_valid(const uint32_t end_position) const
   return (back() == end_position);
 }
 
+
 # ifdef DEBUG_MACRO
 const std::string Path::print() const
 {
@@ -82,6 +79,7 @@ const std::string Path::print() const
   return message;
 }
 #endif
+
 
 const std::deque<uint32_t> Path::get_indices() const
 {

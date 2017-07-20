@@ -8,6 +8,8 @@ include_directories(${GTEST_INCLUDE})
 
 set(TEST_FILES
   pathfinding/test_pathfinder.cpp
+  pathfinding/test_path.cpp
+  pathfinding/test_grid.cpp
   )
 
 add_executable(tests main.cpp ${TEST_FILES})

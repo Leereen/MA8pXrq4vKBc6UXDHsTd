@@ -41,7 +41,7 @@ if (ASAN)
 endif()
 
 option(ASAN OFF)
-option(GTEST OFF)
+option(GTEST OFF) # TODO: add 'friend' declarations in order to test inner functions?
 option(DEBUG_MODE OFF)
 
 # includes
