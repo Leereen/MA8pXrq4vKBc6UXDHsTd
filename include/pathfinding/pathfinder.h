@@ -18,11 +18,12 @@
       different solution for array with multiple valid paths.
       (the provided solutions seem however stable on a given computer)
 */
-int FindPath(const int nStartX, const int nStartY,
-             const int nTargetX, const int nTargetY,
-             const unsigned char* pMap,
-             const int nMapWidth, const int nMapHeight,
-             int* pOutBuffer, const int nOutBufferSize,
-             const bool early_break = true);
+
+extern "C" int FindPath(const int nStartX, const int nStartY,
+                        const int nTargetX, const int nTargetY,
+                        const unsigned char* pMap,
+                        const int nMapWidth, const int nMapHeight,
+                        int* pOutBuffer, const int nOutBufferSize,
+                        const bool early_break = true);
 
 #endif

@@ -1,6 +1,6 @@
 set(LIBRARY pathfinding)
 
-add_library(${LIBRARY}
+add_library(${LIBRARY} SHARED
   pathfinding/pathfinder.cpp
   pathfinding/path.cpp
   pathfinding/grid.cpp
