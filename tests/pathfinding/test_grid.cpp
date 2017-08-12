@@ -4,17 +4,6 @@
 #include "dataset.h"
 
 
-TEST_F(GridTest, get_node_get_position)
-{
-  const uint32_t position(RAND16);
-  const Node node(position % x, position / x);
-  const Node node2 = grid.get_node(position);
-  const uint32_t position2 = grid.get_position(node);
-  ASSERT_EQ(node, node2);
-  ASSERT_EQ(position, position2);
-}
-
-
 TEST_F(GridTest, get_valid_next_positions)
 {
   const Grid grid(test::a1_w, test::a1_h, test::a1);

@@ -13,6 +13,6 @@
 #define DEBUG_PRINT(x) {}
 #endif
 
-typedef std::pair<uint32_t, uint32_t> Node;
+typedef uint32_t Position;
 
 #endif // TYPES_H

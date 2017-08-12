@@ -1,6 +1,9 @@
 #include "grid.h"
 
 
+#define WIDTH (_max_x + 1)
+
+
 Grid::Grid(const uint32_t x, const uint32_t y, const unsigned char* grid)
   // '-1' as indices starts at 0.
   : _max_x(x-1), _max_y(y-1), _grid(grid)
@@ -24,51 +27,45 @@ const bool Grid::_is_out_of_bounds(const Node& node) const
 }
 
 
-const bool Grid::_is_traversable(const Node& node) const
+const bool Grid::_is_traversable(const Position position) const
 {
-  return (_grid[get_position(node)] == 1);
+  return (_grid[position] == 1);
 }
 
 
-const uint32_t Grid::get_position(const Node& node) const
+const Node Grid::_get_node(const Position position) const
 {
-  return node.first + (node.second * (_max_x + 1));
+  return Node(position % WIDTH, position / WIDTH);
 }
 
 
-const Node Grid::get_node(const uint32_t position) const
+const Position Grid::get_position(const uint32_t x, const uint32_t y) const
 {
-  return Node(position % (_max_x + 1), position / (_max_x + 1));
+  return x + (y * WIDTH);
 }
 
 
-const std::forward_list<uint32_t> Grid::get_valid_next_positions(const uint32_t position) const
+const std::forward_list<Position> Grid::get_valid_next_positions(const Position position) const
 {
-  std::forward_list<uint32_t> valid_positions;
-  const Node node = get_node(position);
+  std::forward_list<Position> valid_positions;
+  const Node node = _get_node(position);
   for (const Node& potential_node : {Node(node.first + 1, node.second),
                                      Node(node.first - 1, node.second),
                                      Node(node.first, node.second + 1),
                                      Node(node.first, node.second - 1)})
     {
       if (_is_out_of_bounds(potential_node) or
-          not _is_traversable(potential_node))
+          not _is_traversable(get_position(potential_node.first, potential_node.second)))
         {
           continue;
         }
-      valid_positions.push_front(get_position(potential_node));
+      valid_positions.push_front(get_position(potential_node.first, potential_node.second));
     }
   return valid_positions;
 }
 
 
-const bool Grid::get_value(const Node& node) const
-{
-  return get_value(get_position(node));
-}
-
-
-const bool Grid::get_value(const uint32_t position) const
+const bool Grid::get_value(const Position position) const
 {
   return (bool)_grid[position];
 }
@@ -79,7 +76,7 @@ const std::string Grid::print() const
 {
   std::string array = "[ ";
   size_t i;
-  const uint32_t width = _max_x + 1;
+  const uint32_t width = WIDTH;
   const uint32_t total = width * (_max_y + 1);
   for (i = 0; i < total; i++)
     {

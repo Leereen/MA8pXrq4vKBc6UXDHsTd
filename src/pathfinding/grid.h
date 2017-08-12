@@ -2,8 +2,10 @@
 #define GRID_H
 
 #include <forward_list>
-
 #include "types.h"
+
+
+typedef std::pair<uint32_t, uint32_t> Node;
 
 
 class Grid
@@ -14,19 +16,18 @@ class Grid
   const uint32_t _max_y;
   const unsigned char* _grid;
   const bool _is_out_of_bounds(const Node&) const;
-  const bool _is_traversable(const Node&) const;
+  const bool _is_traversable(const Position) const;
+  const Node _get_node(const Position) const;
 
  public:
 
   Grid(const uint32_t, const uint32_t, const unsigned char*);
   Grid(const Grid&);
 
-  const uint32_t get_position(const Node&) const;
-  const Node get_node(const uint32_t) const;
-  const bool get_value(const uint32_t) const;
-  const bool get_value(const Node&) const;
+  const Position get_position(const uint32_t, const uint32_t) const;
+  const bool get_value(const Position) const;
 
-  const std::forward_list<uint32_t> get_valid_next_positions(const uint32_t) const;
+  const std::forward_list<Position> get_valid_next_positions(const Position) const;
 
 
 #ifdef DEBUG_MACRO

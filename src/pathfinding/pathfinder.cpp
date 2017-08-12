@@ -16,8 +16,8 @@ extern "C" int FindPath(const int nStartX, const int nStartY,
                         const bool early_break)
 {
   const Grid grid(nMapWidth, nMapHeight, pMap);
-  const uint32_t start = grid.get_position(Node(nStartX, nStartY));
-  const uint32_t end = grid.get_position(Node(nTargetX, nTargetY));
+  const uint32_t start = grid.get_position(nStartX, nStartY);
+  const uint32_t end = grid.get_position(nTargetX, nTargetY);
   DEBUG_PRINT("Early break:\t" + std::to_string(early_break));
   DEBUG_PRINT(grid.print());
   PathManager manager (nOutBufferSize, start, end, early_break);
