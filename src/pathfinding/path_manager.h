@@ -4,7 +4,7 @@
 #include <unordered_set>
 #include <memory>
 
-#include "path.h"
+#include "dijkstra/path.h"
 
 
 typedef std::unordered_set<Path> PathSet;
@@ -12,23 +12,20 @@ typedef std::unordered_set<Path> PathSet;
 
 class PathManager
 {
- private:
-
+ protected:
   const uint32_t _max_size;
   const uint32_t _destination;
-  std::unordered_set<uint32_t> _visited;
   std::shared_ptr<Path> _shortest_path;
+  std::unordered_set<uint32_t> _visited;
   const bool _early_break;
-
-  const bool _evaluate_new_paths(PathSet&, const Path&);
 
  public:
 
   PathManager(const uint32_t, const uint32_t, const uint32_t, const bool = true);
-  const bool recc(const PathSet& current_paths, const uint32_t = 0);
-  const bool register_solution(int *) const;
-  const bool has_solution() const;
-  const uint32_t solution_length() const;
+  virtual const bool recc(const PathSet& current_paths, const uint32_t = 0) = 0;
+  virtual const bool register_solution(int *) const = 0;
+  virtual const bool has_solution() const = 0;
+  virtual const uint32_t solution_length() const = 0;
 
 };
 

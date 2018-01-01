@@ -3,8 +3,8 @@
 
 #include <deque>
 
-#include "types.h"
-#include "grid.h"
+#include "../types.h"
+#include "../grid.h"
 
 
 class Path;

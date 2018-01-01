@@ -5,6 +5,10 @@ sudo: false
 language: cpp
 compiler: clang
 
+before_install:
+  - virtualenv -p python3 ./python_binding_venv/
+  - source ./python_binding_venv/bin/activate
+
 script:
   - make clean do_asan_test
   - make clean do_test

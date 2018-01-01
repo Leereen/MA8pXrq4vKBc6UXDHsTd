@@ -1,6 +1,6 @@
 #include "grid.h"
 #include "types.h"
-#include "path_manager.h"
+#include "dijkstra/manager.h"
 
 #include <memory>
 #include <list>
@@ -20,7 +20,7 @@ extern "C" int FindPath(const int nStartX, const int nStartY,
   const uint32_t end = grid.get_position(nTargetX, nTargetY);
   DEBUG_PRINT("Early break:\t" + std::to_string(early_break));
   DEBUG_PRINT(grid.print());
-  PathManager manager (nOutBufferSize, start, end, early_break);
+  DijkstraManager manager (nOutBufferSize, start, end, early_break);
   if (not manager.recc({Path(grid, start)}) and early_break)
     {
       // - no final result found (manager.recc returned false)

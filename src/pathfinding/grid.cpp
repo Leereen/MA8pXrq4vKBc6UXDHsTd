@@ -33,7 +33,7 @@ const bool Grid::_is_traversable(const Position position) const
 }
 
 
-const Node Grid::_get_node(const Position position) const
+const Node Grid::get_node(const Position position) const
 {
   return Node(position % WIDTH, position / WIDTH);
 }
@@ -48,7 +48,7 @@ const Position Grid::get_position(const uint32_t x, const uint32_t y) const
 const std::forward_list<Position> Grid::get_valid_next_positions(const Position position) const
 {
   std::forward_list<Position> valid_positions;
-  const Node node = _get_node(position);
+  const Node node = get_node(position);
   for (const Node& potential_node : {Node(node.first + 1, node.second),
                                      Node(node.first - 1, node.second),
                                      Node(node.first, node.second + 1),

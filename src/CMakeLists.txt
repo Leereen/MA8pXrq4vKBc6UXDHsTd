@@ -2,9 +2,10 @@ set(LIBRARY pathfinding)
 
 add_library(${LIBRARY} SHARED
   pathfinding/pathfinder.cpp
-  pathfinding/path.cpp
   pathfinding/grid.cpp
   pathfinding/path_manager.cpp
+  pathfinding/dijkstra/path.cpp
+  pathfinding/dijkstra/manager.cpp
   )
 
 if (GTEST)

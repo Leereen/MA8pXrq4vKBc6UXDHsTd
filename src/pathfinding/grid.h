@@ -17,15 +17,14 @@ class Grid
   const unsigned char* _grid;
   const bool _is_out_of_bounds(const Node&) const;
   const bool _is_traversable(const Position) const;
-  const Node _get_node(const Position) const;
 
  public:
-
   Grid(const uint32_t, const uint32_t, const unsigned char*);
   Grid(const Grid&);
 
   const Position get_position(const uint32_t, const uint32_t) const;
   const bool get_value(const Position) const;
+  const Node get_node(const Position) const;
 
   const std::forward_list<Position> get_valid_next_positions(const Position) const;
 
