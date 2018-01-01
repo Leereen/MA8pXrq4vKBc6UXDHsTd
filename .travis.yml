@@ -1,6 +1,6 @@
 os: linux
 dist: trusty
-sudo: false
+sudo: required  # needed for ptrace -> ASAN (https://github.com/travis-ci/travis-ci/issues/9033)
 
 language: cpp
 compiler: clang

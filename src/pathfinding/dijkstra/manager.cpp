@@ -2,9 +2,14 @@
 #include "manager.h"
 
 
-DijkstraManager::DijkstraManager(const uint32_t max, const uint32_t start,
-                                 const uint32_t end, const bool early_break)
-  : PathManager(max, start, end, early_break)
+DijkstraManager::DijkstraManager(const uint32_t max, const Position start,
+                                 const Position end, const Grid& grid,
+                                 const bool early_break)
+  : PathManager(max, start, end, grid, early_break)
+{}
+
+
+DijkstraManager::~DijkstraManager()
 {}
 
 
@@ -15,7 +20,7 @@ const bool DijkstraManager::_evaluate_new_paths(PathSet& new_paths, const Path& 
 
     Return true if the final path is detected, else false.
    */
-  for (const uint32_t test_position : entry_path.new_positions())
+  for (const Position test_position : _grid.get_valid_next_positions(entry_path.back()))
     {
       // new positions no more evaluated against old paths, but against a pool
       // of already visited positions. If a paths get a new position already
@@ -32,7 +37,6 @@ const bool DijkstraManager::_evaluate_new_paths(PathSet& new_paths, const Path& 
         {
           // solution!
           DEBUG_PRINT("Solution found! >> " + new_path->print());
-          _visited.insert(test_position);
           _shortest_path = new_path;
           return true;
         }
@@ -51,17 +55,17 @@ const bool DijkstraManager::_evaluate_new_paths(PathSet& new_paths, const Path& 
 }
 
 
-const bool DijkstraManager::recc(const PathSet& current_paths, const uint32_t current_size)
+const bool DijkstraManager::_find_rec(const PathSet& current_paths, const uint32_t current_size)
 {
   /*
-    Each call of recc builds all the possible paths of N positions (N being the
-    number of recc calls), generated and evaluated from the paths generated
+    Each call of find builds all the possible paths of N positions (N being the
+    number of find calls), generated and evaluated from the paths generated
     at N-1 rec call.
     As EVERY current path is used to generate new paths, the generated new_paths
     will contain every possible new paths. If new_paths is empty, it means there
     is no paths to _destination.
   */
-  if (current_size == _max_size and _early_break)
+  if (_early_break and current_size >= _max_size)
     {
       // _max_size (nOutBufferSize) reached. Aborting if _early_break activated
       return false;
@@ -79,46 +83,15 @@ const bool DijkstraManager::recc(const PathSet& current_paths, const uint32_t cu
       DEBUG_PRINT("Iteration: " + std::to_string(current_size) +
                   " (nb paths: " + std::to_string(new_paths.size())
                   + ")");
-      return recc(new_paths, current_size+1);
+      return _find_rec(new_paths, current_size+1);
     }
   return false;
 }
 
-const bool DijkstraManager::has_solution() const
+
+const bool DijkstraManager::find()
 {
-  return not (_shortest_path == nullptr);
-}
-
-
-const uint32_t DijkstraManager::solution_length() const
-{
-  if (has_solution())
-    {
-      return (_shortest_path->size() - 1);
-    }
-  return 0;
-}
-
-
-const bool DijkstraManager::register_solution(int* pOutBuffer) const
-{
-  if (not _shortest_path)
-    {
-      return false;
-    }
-  const std::deque<uint32_t> indices = _shortest_path->get_indices();
-  for (int i = 0; i < _max_size; i++)
-    {
-      // path.get_indices() returns the complete path, WITH the starting node
-      // which shall not be registered.
-      if ((i+1) < indices.size())
-        {
-          pOutBuffer[i] = (int)indices[i+1];
-        }
-      else
-        {
-          pOutBuffer[i] = -1;
-        }
-    }
-  return true;
+  // when called, _visited is still only populated with the start position
+  // (see PathManager constructor)
+  return _find_rec({Path(_grid, *_visited.begin())});
 }

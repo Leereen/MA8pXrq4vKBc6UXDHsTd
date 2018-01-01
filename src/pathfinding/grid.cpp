@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "grid.h"
 
 
@@ -68,6 +69,24 @@ const std::forward_list<Position> Grid::get_valid_next_positions(const Position 
 const bool Grid::get_value(const Position position) const
 {
   return (bool)_grid[position];
+}
+
+
+const std::pair<int32_t, int32_t> Grid::_diff(const Position a, const Position b) const
+{
+  const Node a_node = get_node(a), b_node = get_node(b);
+  return {b_node.first - a_node.first, b_node.second - a_node.second};
+}
+
+
+const uint32_t Grid::distance(const Position a, const Position b, const Algorithm algo) const
+{
+  std::pair<int32_t, int32_t> difference(_diff(a, b));
+  if (algo == Algorithm::ASTAR_MANHATTAN)
+    {
+      return (abs(difference.first) + abs(difference.second));
+    }
+  return -1;
 }
 
 

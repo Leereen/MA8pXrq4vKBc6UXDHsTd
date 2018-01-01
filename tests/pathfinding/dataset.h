@@ -19,12 +19,12 @@ namespace test
     1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0,
     1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1
   };
-  const int a1_w = 12;
-  const int a1_h = 14;
-  const int a1_sx = 1;
-  const int a1_sy = 1;
-  const int a1_dx = 5;
-  const int a1_dy = 12;
+  const int a1_w = 12;  // table width
+  const int a1_h = 14;  // table height
+  const int a1_sx = 1;  // start X
+  const int a1_sy = 1;  // start Y
+  const int a1_dx = 5;  // destination X
+  const int a1_dy = 12; // destination Y
   const size_t a1_path_length = 29;
   const int a1_real[] = {14, 15, 27, 39, 51 , 63, 62, 74, 86, 87, 99, 100, 101, 102, 114, 126, 127, 128, 129, 130, 142, 154, 166, 165, 164, 163, 162, 150, 149};
 

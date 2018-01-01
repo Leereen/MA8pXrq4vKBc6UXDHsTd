@@ -3,9 +3,8 @@
 
 #include <deque>
 
-#include "../types.h"
-#include "../grid.h"
-
+#include "types.h"
+#include "grid.h"
 
 class Path;
 template <> class std::hash<Path>;
@@ -20,18 +19,25 @@ class Path
 
  public:
   Path(const Path&);
-  Path(const Grid&, const uint32_t);
+  template <typename Iterator> Path(const Grid& grid, Iterator start, Iterator end)
+    : _grid(grid)
+    {
+      for (auto it = start; it != end; it++)
+        {
+          _path.push_back(*it);
+        }
+    };
+  Path(const Grid&, const Position);
 
-  const uint32_t front() const;
-  const uint32_t back() const;
-  const uint32_t size() const;
+  const Position front() const;
+  const Position back() const;
+  const Position size() const;
 
   const bool operator==(const Path&) const;
   const bool is_shorter(const Path&) const;
   const bool is_valid(const uint32_t) const;
-  const std::forward_list<uint32_t> new_positions() const;
 
-  const bool add_position(const uint32_t);
+  const bool add_position(const Position);
   const std::deque<uint32_t> get_indices() const;
 
 #ifdef DEBUG_MACRO
@@ -47,7 +53,7 @@ template <> class std::hash<Path>
  public:
   size_t operator()(const Path& path) const
   {
-    return std::hash<uint32_t>()(path.back());
+    return std::hash<Position>()(path.back());
   }
 };
 

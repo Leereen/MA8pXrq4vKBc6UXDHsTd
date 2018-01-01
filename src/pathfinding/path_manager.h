@@ -4,9 +4,9 @@
 #include <unordered_set>
 #include <memory>
 
-#include "dijkstra/path.h"
+#include "path.h"
 
-
+// TODO: move in dijkstra?
 typedef std::unordered_set<Path> PathSet;
 
 
@@ -17,16 +17,17 @@ class PathManager
   const uint32_t _destination;
   std::shared_ptr<Path> _shortest_path;
   std::unordered_set<uint32_t> _visited;
+  const Grid& _grid;
   const bool _early_break;
 
  public:
+  PathManager(const uint32_t, const Position, const Position, const Grid&, const bool = true);
+  virtual ~PathManager() {};
+  const bool register_solution(int *) const;
+  const bool has_solution() const;
+  const uint32_t solution_length() const;
 
-  PathManager(const uint32_t, const uint32_t, const uint32_t, const bool = true);
-  virtual const bool recc(const PathSet& current_paths, const uint32_t = 0) = 0;
-  virtual const bool register_solution(int *) const = 0;
-  virtual const bool has_solution() const = 0;
-  virtual const uint32_t solution_length() const = 0;
-
+  virtual const bool find() = 0;
 };
 
 

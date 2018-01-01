@@ -19,11 +19,19 @@
       (the provided solutions seem however stable on a given computer)
 */
 
+extern "C" enum Algorithm
+{
+  DIJKSTRA = 0,
+  ASTAR_MANHATTAN = 1,
+};
+
+
 extern "C" int FindPath(const int nStartX, const int nStartY,
                         const int nTargetX, const int nTargetY,
                         const unsigned char* pMap,
                         const int nMapWidth, const int nMapHeight,
                         int* pOutBuffer, const int nOutBufferSize,
-                        const bool early_break = true);
+                        const bool early_break = true,
+                        const Algorithm algo = Algorithm::DIJKSTRA);
 
 #endif

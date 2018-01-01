@@ -1,5 +1,8 @@
 from ctypes import CFUNCTYPE, POINTER, cdll, c_int, c_char, c_char_p, c_bool
 
+DIJKSTRA = 0
+ASTAR_MANHATTAN = 1
+
 
 class FindPath(object):
 
@@ -13,7 +16,8 @@ class FindPath(object):
             c_int, c_int,   # map width & height
             POINTER(c_int), # output buffer
             c_int,          # buffer size
-            c_bool          # early_break (opt)
+            c_bool,         # early_break (opt)
+            c_int           # pathfinding algorithm
         )
         self._function = self._load_function()
 
@@ -24,7 +28,8 @@ class FindPath(object):
 
     def find_path(self, start_x, start_y, target_x, target_y,
                   array, array_width, array_height,
-                  out_buffer, out_buffer_size, early_break=True):
+                  out_buffer, out_buffer_size,
+                  early_break=True, algo=DIJKSTRA):
         # initialization of RW buffer to be filled by C library
         buffer = (c_int * out_buffer_size)(*([-1]*out_buffer_size))
         result = self._function(c_int(start_x), c_int(start_y),
@@ -33,7 +38,8 @@ class FindPath(object):
                                 c_int(array_width), c_int(array_height),
                                 buffer,
                                 c_int(out_buffer_size),
-                                c_bool(early_break))
+                                c_bool(early_break),
+                                c_int(algo))
         for value in buffer:
             out_buffer.append(value)
         return result

@@ -4,26 +4,21 @@
 #include <unordered_set>
 #include <memory>
 
-#include "path.h"
+#include "../path.h"
 #include "../path_manager.h"
 
-typedef std::unordered_set<Path> PathSet;
 
-
-class DijkstraManager: PathManager
+class DijkstraManager: public PathManager
 {
  private:
-
   const bool _evaluate_new_paths(PathSet&, const Path&);
+  const bool _find_rec(const PathSet& current_paths, const uint32_t = 0);
+
 
  public:
-
-  DijkstraManager(const uint32_t, const uint32_t, const uint32_t, const bool = true);
-  const bool recc(const PathSet& current_paths, const uint32_t = 0);
-  const bool register_solution(int *) const;
-  const bool has_solution() const;
-  const uint32_t solution_length() const;
-
+  DijkstraManager(const uint32_t, const Position, const Position, const Grid&, const bool = true);
+  ~DijkstraManager();
+  const bool find();
 };
 
 

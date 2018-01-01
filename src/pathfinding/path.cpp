@@ -8,7 +8,7 @@ Path::Path(const Path& other) : _path(other._path), _grid(other._grid)
 {}
 
 
-Path::Path(const Grid& grid, const uint32_t starting_position)
+Path::Path(const Grid& grid, const Position starting_position)
   : _path({starting_position}), _grid(grid)
 {}
 
@@ -39,16 +39,10 @@ const bool Path::operator==(const Path& other) const
 }
 
 
-const bool Path::add_position(const uint32_t new_position)
+const bool Path::add_position(const Position new_position)
 {
   _path.push_back(new_position);
   return true;
-}
-
-
-const std::forward_list<uint32_t> Path::new_positions() const
-{
-  return _grid.get_valid_next_positions(_path.back());
 }
 
 
@@ -58,7 +52,7 @@ const bool Path::is_shorter(const Path& other_path) const
 }
 
 
-const bool Path::is_valid(const uint32_t end_position) const
+const bool Path::is_valid(const Position end_position) const
 {
   return (back() == end_position);
 }
@@ -68,7 +62,7 @@ const bool Path::is_valid(const uint32_t end_position) const
 const std::string Path::print() const
 {
   std::string message("[ ");
-  for (const uint32_t position : _path)
+  for (const Position position : _path)
     {
       const Node node = _grid.get_node(position);
       message += "(" + std::to_string(node.first) + ", " +

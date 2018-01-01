@@ -15,4 +15,5 @@
 
 typedef uint32_t Position;
 
+
 #endif // TYPES_H

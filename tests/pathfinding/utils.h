@@ -1,7 +1,7 @@
 #ifndef TESTS_UTILS_H
 #define TESTS_UTILS_H
 
-#include "pathfinding/dijkstra/path.h"
+#include "pathfinding/path.h"
 #include "pathfinding/grid.h"
 
 

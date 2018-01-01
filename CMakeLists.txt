@@ -1,5 +1,4 @@
-# 2.8.11 required for target_include_directories
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 3.5.0)
 project(pathfinding CXX)
 
 # constants
@@ -33,12 +32,9 @@ function (add_in_list list value_or_list)
   set_property(GLOBAL APPEND PROPERTY ${list} ${value_or_list})
 endfunction(add_in_list)
 
+
 # compilation options
 set(CMAKE_CXX_STANDARD 11)
-if (ASAN)
-  MESSAGE(STATUS "${Yellow}[OPTION] ASAN compilation flags activated${Reset}")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer -fno-common")
-endif()
 
 option(ASAN OFF)
 option(GTEST OFF) # TODO: add 'friend' declarations in order to test inner functions?
